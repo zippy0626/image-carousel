@@ -122,7 +122,7 @@ body {
   height: var(--pixels);
   border-radius: 50%;
   
-  background-color: white;
+  background-color: hsl(0, 0%, 90%);
   cursor: pointer;
 }
 
@@ -166,7 +166,7 @@ body {
 .three {
   width: var(--imageWidth);
   height: var(--imageHeight);
-  background-color: yellow;
+  background-color: rebeccapurple;
   
   position: absolute;
   left: 68%;
