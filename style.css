@@ -1,0 +1,175 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --borderRadius: 5px;
+}
+
+body, html {
+  width: 100vw;
+  height: 100vh;
+}
+
+img {
+  width: 100%;
+  height: fit-content;
+  user-select: none;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-frame {
+  /* nav variables */
+  --navWidth: 40px;
+  --navHeight: 80%;
+  --navBgCol: rgba(255, 255, 255, 0.3);
+
+  width: 850px;
+  height: 600px;
+  outline: 2px solid hsl(0, 0%, 90%);
+
+  position: relative;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  overflow: hidden;
+}
+
+/* nav arrows */
+.nav-left:hover, .nav-right:hover {
+  background-color: rgba(255, 255, 255, 0.5);;
+}
+.nav-left, .nav-right {
+  transition: all 150ms ease;
+}
+
+.nav-left {
+  position: absolute;
+  top: 50%;
+  transform: translatey(-50%);
+
+  width: var(--navWidth);
+  height: var(--navHeight);
+
+  background-color: var(--navBgCol);
+
+  border-top-right-radius: var(--borderRadius);
+  border-bottom-right-radius: var(--borderRadius);
+
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nav-left-icon, .nav-right-icon {
+  height: 30px;
+  width: 30px;
+
+  user-select: none;
+}
+
+.nav-right {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translatey(-50%);
+
+  width: var(--navWidth);
+  height: var(--navHeight);
+
+  background-color: var(--navBgCol);
+
+  border-top-left-radius: var(--borderRadius);
+  border-bottom-left-radius: var(--borderRadius);
+
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nav-right-icon {
+  transform: scaleX(-1);
+}
+
+.image-navigation-dots {
+  width: 100%;
+  height: 45px;
+
+  background-color: rgb(255, 255, 255, .5);
+
+  position: absolute;
+  bottom: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+.dot {
+  --pixels: 20px;
+  width: var(--pixels);
+  height: var(--pixels);
+  border-radius: 50%;
+  
+  background-color: white;
+  cursor: pointer;
+}
+
+/* carousel */
+.image-carousel {
+  height: 100%;
+  --imageWidth: 850px;
+  --imageHeight: 100%;
+
+  position: relative;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0;
+}
+
+.one {
+  width: var(--imageWidth);
+  height: var(--imageHeight);
+  background-color: red;
+
+  position: absolute;
+  left: 0%;
+
+  transition: all 400ms ease;
+}
+.two {
+  width: var(--imageWidth);
+  height: var(--imageHeight);
+  background-color: blue;
+
+  position: absolute;
+  left: 34%; /*since carousel is 3x width of parent*/
+
+  transition: all 400ms ease;
+}
+.three {
+  width: var(--imageWidth);
+  height: var(--imageHeight);
+  background-color: yellow;
+  
+  position: absolute;
+  left: 68%;
+
+  transition: all 400ms ease;
+}
