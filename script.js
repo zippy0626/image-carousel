@@ -20,11 +20,15 @@ imageCarousel.style.width = `
   ${imageElements.length * 100}%
 `;
 
-// dot functionality
+// Dot Functionality
 function initDots() {
   const imageNavDotContainer = document.querySelector(".image-navigation-dots");
-  for (let i = 0; i < imageElements.length; i++) {
-    imageNavDotContainer.innerHTML += `<div class="dot"></div>`;
+  let i = 0;
+  for (const element of imageElements) {
+    const dot = document.createElement('div');
+    dot.className = `dot i-${i}`
+    imageNavDotContainer.appendChild(dot);
+    i+=1;
   }
 }
 initDots();
@@ -69,7 +73,7 @@ const autoPan = {
   },
 };
 
-//flags
+// Flags
 let index = 0;
 let isTransitioning = false;
 
@@ -140,3 +144,25 @@ navLeft.addEventListener("click", () => {
     }, 350);
   }
 });
+
+// Handle User dot click
+
+function panToIndex(index) {
+  
+}
+
+function handleDotClicks() {
+  const imageNavDotContainer = document.querySelector(".image-navigation-dots");
+
+  imageNavDotContainer.addEventListener('click', (e)=>{
+    const target = e.target.classList.contains("dot")
+      ? e.target
+      : null
+
+    if (target) {
+      const dotIndex = parseInt(target.className.split("i-")[1]);
+      updateDot(dotIndex);
+    }
+  });
+}
+handleDotClicks();
