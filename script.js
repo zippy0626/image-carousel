@@ -33,7 +33,7 @@ function initDots() {
 }
 initDots();
 
-function updateDot(index) {
+function updateDotHighlight(index) {
   const imageNavDotContainer = document.querySelector(".image-navigation-dots");
   for (const dot of imageNavDotContainer.children) {
     dot.style.backgroundColor = `hsl(0, 0%, 90%)`;
@@ -50,14 +50,14 @@ const autoPan = {
   startAutoPan(delay) {
     this.interval = setInterval(() => {
       index += 1;
-      if (index < imageElements.length) updateDot(index);
+      if (index < imageElements.length) updateDotHighlight(index);
 
       imageCarousel.style.transition = "all 350ms ease-in-out";
       imageCarousel.style.transform = `translateX(-${index * imageWidth}%)`;
 
       if (index === imageElements.length) {
         index = 0;
-        updateDot(index);
+        updateDotHighlight(index);
 
         setTimeout(() => {
           imageCarousel.style.transition = "none";
@@ -77,17 +77,16 @@ const autoPan = {
 let index = 0;
 let isTransitioning = false;
 
-updateDot(index);
+updateDotHighlight(index);
 autoPan.startAutoPan(5000);
 
 navRight.addEventListener("click", () => {
   if (isTransitioning) return;
   isTransitioning = true;
-
   autoPan.stopAutoPan();
 
   index += 1;
-  if (index < imageElements.length) updateDot(index);
+  if (index < imageElements.length) updateDotHighlight(index);
 
   //going negative/right
   imageCarousel.style.transition = "all 350ms ease-in-out";
@@ -96,7 +95,7 @@ navRight.addEventListener("click", () => {
   //last image
   if (index === imageElements.length) {
     index = 0;
-    updateDot(index);
+    updateDotHighlight(index);
 
     setTimeout(() => {
       imageCarousel.style.transition = "none";
@@ -105,7 +104,7 @@ navRight.addEventListener("click", () => {
       isTransitioning = false;
       autoPan.startAutoPan(5000);
     }, 350);
-  } else {
+  } else { //other images
     setTimeout(() => {
       isTransitioning = false;
       autoPan.startAutoPan(5000);
@@ -116,11 +115,10 @@ navRight.addEventListener("click", () => {
 navLeft.addEventListener("click", () => {
   if (isTransitioning) return;
   isTransitioning = true;
-
   autoPan.stopAutoPan();
 
   index -= 1;
-  if (index >= 0) updateDot(index);
+  if (index >= 0) updateDotHighlight(index);
 
   // going positive/left
   imageCarousel.style.transition = "all 350ms ease-in-out";
@@ -128,7 +126,7 @@ navLeft.addEventListener("click", () => {
 
   if (index === -1) {
     index = 2;
-    updateDot(index);
+    updateDotHighlight(index);
 
     setTimeout(() => {
       imageCarousel.style.transition = "none";
@@ -146,10 +144,48 @@ navLeft.addEventListener("click", () => {
 });
 
 // Handle User dot click
+function panToIndex(clickedIndex, currentIndex) {
+  if (isTransitioning) return;
+  isTransitioning = true;
+  autoPan.stopAutoPan()
 
-function panToIndex(index) {
-  
-}
+  if (clickedIndex > currentIndex) {
+    // reset
+    imageCarousel.style.transition = `none`;
+    imageCarousel.style.transform = `translateX(0)`;
+
+    imageCarousel.style.transition = `all 350ms ease-in-out`;
+    imageCarousel.style.transform = `translateX(-${clickedIndex * imageWidth}%)`;
+
+    index = clickedIndex; //global index
+    
+    setTimeout(() => {
+      isTransitioning = false;
+      autoPan.startAutoPan(5000)
+    }, 350);
+
+  } else if (currentIndex > clickedIndex) {
+    // reset
+    imageCarousel.style.transition = `none`;
+    imageCarousel.style.transform = `translateX(0)`;
+
+    imageCarousel.style.transition = `all 350ms ease-in-out`;
+    imageCarousel.style.transform = `translateX(${clickedIndex * imageWidth}%)`;
+
+    index = clickedIndex; //global index
+    
+    setTimeout(() => {
+      isTransitioning = false;
+      autoPan.startAutoPan(5000)
+    }, 350);
+  } else if (currentIndex===clickedIndex) {
+    setTimeout(() => {
+      isTransitioning = false;
+      autoPan.startAutoPan(5000)
+    }, 350);
+    return;
+  };
+};
 
 function handleDotClicks() {
   const imageNavDotContainer = document.querySelector(".image-navigation-dots");
@@ -160,8 +196,9 @@ function handleDotClicks() {
       : null
 
     if (target) {
-      const dotIndex = parseInt(target.className.split("i-")[1]);
-      updateDot(dotIndex);
+      const clickedIndex = parseInt(target.className.split("i-")[1]);
+      updateDotHighlight(clickedIndex);
+      panToIndex(clickedIndex, index);
     }
   });
 }
